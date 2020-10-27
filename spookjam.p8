@@ -38,6 +38,7 @@ function _init()
 	mask.w = 16
 	mask.h = 16
 	mask.sp = 98
+	mask.taken = false
 	
 	
 	gravity = 0.3
@@ -247,11 +248,12 @@ function player_update()
  --if (btnp(5)) detect_fait_fantome()
 	
 	--if player collides with a mask
-	if(check_coll(p,mask)) then
-		p.mask = 1
+	if(check_coll(p,mask)
+	and mask.taken == false) then
 		make_explosions(mask.x,mask.y,15)
 		make_particules(16)
 		mask.sp = 100
+		mask.taken = true
 	end
 	
 	--if player has mask 2
@@ -259,11 +261,15 @@ function player_update()
 		p.boost = 6
 	end
 	
-	--if player has mask 1
-	-- he can't move
-	if(p.mask == 1) then
-		p.dx = 0
-		p.dy += gravity
+	--mettre/enlever mask
+	if(mask.taken == true) then
+		if(p.mask == 0) then
+			if(btnp(❎)) p.mask = 1
+		elseif(p.mask == 1) then
+		 p.dx = 0
+			p.dy = 0
+			if(btnp(❎)) p.mask = 0
+		end
 	end
 	
 	--slide
