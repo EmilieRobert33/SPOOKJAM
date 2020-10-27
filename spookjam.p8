@@ -4,6 +4,13 @@ __lua__
 --variables for p and obj
 function _init()
 	p = {}
+ -----------------
+ --gestion de la vie
+ ------------------
+ p.mort=false
+ p.life="♥♥♥♥"
+ ------------------
+ ------------------
 	p.sp = 0
 	p.x = 64
 	p.y = 80
@@ -89,7 +96,9 @@ function _draw()
 	print("⬇️ "..collide_d,p.x,p.y-34)
 	print("mask "..p.mask,p.x,p.y-45)
  ------------------------------
-
+ -- dessine la vie
+ ------------------------------
+ draw_life() 
 end
 
 function _update()
@@ -235,7 +244,7 @@ function player_update()
 		p.landed = false
 	end
  -------test por declenche fantome depuis tiles----
- if (btnp(5)) detect_fait_fantome()
+ --if (btnp(5)) detect_fait_fantome()
 	
 	--if player collides with a mask
 	if(check_coll(p,mask)) then
@@ -475,7 +484,6 @@ function make_f(x,y)
 end
 
 function draw_f()
- print (temps)
  if (p.mask==1) then
   for i=1,#fants do
    if (fants[i].x<p.x) then
@@ -538,7 +546,7 @@ if (fants_f>14) fants_f=8
  --if (temps<=0) sfx(0)
  for i=1,#fants do
   if (p.mask!=1 and bug_p==0 and temps<=-20)then
-  sfx(0,1)
+  sfx(30,1)
    if (abs(p.x-fants[i].x)< 90 and temps<=0) bug_p+=1
    if (abs(p.x-fants[i].x)< 50 and temps<=0) bug_p+=1
    if (abs(p.x-fants[i].x)< 30 and temps<=0) bug_p+=1
@@ -639,7 +647,21 @@ function dr_fant()
  draw_f()
  bug(a,temps)
 end
+--------------------------------
+--gestion de la vie
+---------------------------------
+function g_vie() --gagne un coeur
+  p.life=p.life.."♥"
+end
 
+function p_vie() --perte d'un coeur
+  p.life=sub(p.life,1,#p.life-1)
+  if (#p.life<=0) p.mort=true
+end
+
+function draw_life()
+  print(p.life,cam_x,0,8)
+end
 __gfx__
 00099999999990000009999999999000000000000000000000000000000000000000000000000000777777777777777777777777777777777777777777777777
 00999999999999000099999999999900000000000000000000000000000000000000000000000000777777777777777777777777777777777777777777777777
