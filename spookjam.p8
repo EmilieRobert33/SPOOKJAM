@@ -43,6 +43,10 @@ function _init()
 	map_start=0
 	map_end=1024
 	
+	--sfx
+	particules = {}
+	explosions = {}
+	
 	------------test---------
 	x1r=0 y1r=0 x2r=0 y2r=0
 	collide_l="no"
@@ -65,6 +69,10 @@ function _draw()
 	
 	--mask 2
 	spr(mask.sp,mask.x,mask.y,2,2)
+	
+	--sfx 
+	draw_explosions()
+	draw_particules()
 	
 	----------test----------
 	rect(x1r,y1r,x2r,y2r,7)
@@ -222,6 +230,8 @@ function player_update()
 	--if player collides with a mask
 	if(check_coll(p,mask)) then
 		p.mask = 2
+		make_explosions(mask.x,mask.y,15)
+		make_particules(16)
 		mask.sp = 100
 	end
 	
@@ -354,6 +364,63 @@ function limit_speed(num,maximum)
 end
 -->8
 --sfx
+
+--explosion
+function make_explosions(x,y,nb)
+	while(nb > 0) do
+		explo = {}
+		explo.x = x+(rnd(2)-1)*10
+		explo.y = y+(rnd(2)-1)*10
+		explo.r = 4 + rnd(4)
+		explo.c = 10
+		add(explosions, explo)
+		sfx(0)
+		nb -= 1
+	end
+end
+
+function draw_explosions()
+	for e in all(explosions) do
+		circfill(e.x,e.y,e.r,e.c)
+		e.r -=1
+		if(e.r <=4) e.c = 9
+		if(e.r <=2) e.c = 8
+		if (e.r <= 0) del(explosions,e)
+	end
+end
+
+--particules
+
+function make_particules(nb)
+	while (nb > 0) do
+		part = {}
+		part.x = mask.x +4
+		part.y = mask.y +4
+		part.col = flr(rnd(16))
+		part.dx = (rnd(2)-1)*3
+		part.dy = (rnd(2)-1)*3
+		part.f = 0
+		part.fmax = 30*2
+		add(particules,part)
+		nb -= 1
+	end
+end
+
+function draw_particules()
+	for part in all(particules) do
+		pset(part.x, part.y, part.col)
+		part.x += part.dx
+		part.y += part.dy
+		part.f += 1
+		if (part.f > part.fmax or
+						part.x < 0 or part.x >= 128 or
+						part.y < 0 or part.y >= 128) then
+			del(particules, part)
+		end
+	end
+end
+
+--screenshake
 
 __gfx__
 00099999999990000009999999999000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
