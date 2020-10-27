@@ -250,6 +250,13 @@ function player_update()
 		p.boost = 6
 	end
 	
+	--if player has mask 1
+	-- he can't move
+	if(p.mask == 1) then
+		p.dx = 0
+		p.dy += gravity
+	end
+	
 	--slide
 	if p.running 
 	and not (btn(1))
