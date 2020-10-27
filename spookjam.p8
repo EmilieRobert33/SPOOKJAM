@@ -394,8 +394,8 @@ end
 function make_particules(nb)
 	while (nb > 0) do
 		part = {}
-		part.x = mask.x +4
-		part.y = mask.y +4
+		part.x = explo.x +4
+		part.y = explo.y +4
 		part.col = flr(rnd(16))
 		part.dx = (rnd(2)-1)*3
 		part.dy = (rnd(2)-1)*3
