@@ -61,6 +61,7 @@ function _init()
 	particules = {}
 	explosions = {}
 	torches = {}
+	music(00)
 	
 	detect_fait_torch()
 	make_torche(x,y)
@@ -174,6 +175,7 @@ function _update()
  update_f()
 	camera_update()
  up_plat()
+ 
 	
 	--sfx
 	animate_torche()
@@ -441,6 +443,7 @@ function check_collision_m()
 		mask.sp = 105
 		mask.taken = true
   detect_fait_fantome()
+  sfx(33)
 	end
 end
 
