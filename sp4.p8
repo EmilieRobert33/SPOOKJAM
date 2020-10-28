@@ -22,7 +22,7 @@ function _init()
 	p.max_dx = 2
 	p.max_dy = 3
 	p.acc = 0.5
-	p.boost = 4
+	p.boost = 4.25
 	p.mask = 0
 	p.anim = 0
 	p.running = false
@@ -338,12 +338,16 @@ function player_update()
 	--if player collide with lava
 	if(collide_with(p,3)) then	
 		p.mort=true
+		make_explosions(p.x,p.y,25)
+		p.dx=0
+		p.dy=0
 		sfx(32)
 		if(p.cp==true) then
 			p.x = cp.x
 			p.y = cp.y
 			p.mask = cp.mask
 			p.life = cp.life
+			make_particules(25)
 		else
 		--restart game
 		print("you are dead ",p.x,p.y-51,9)
@@ -428,8 +432,8 @@ function check_collision_m()
 	if(check_coll(p,mask)
 	and mask.taken == false) then
 		make_explosions(mask.x,mask.y,15)
-		make_particules(16)
-		mask.sp = 100
+		make_particules(mask.x,mask.y,16)
+		mask.sp = 105
 		mask.taken = true
   detect_fait_fantome()
 	end
@@ -581,7 +585,7 @@ function make_explosions(x,y,nb)
 		explo.x = x+(rnd(2)-1)*10
 		explo.y = y+(rnd(2)-1)*10
 		explo.r = 4 + rnd(4)
-		explo.c = 10
+		explo.c = 8
 		add(explosions, explo)
 		sfx(0)
 		nb -= 1
@@ -600,11 +604,11 @@ end
 
 --particules
 
-function make_particules(nb)
+function make_particules(x,y,nb)
 	while (nb > 0) do
 		part = {}
-		part.x = explo.x +4
-		part.y = explo.y +4
+		part.x = x +4
+		part.y = y +4
 		part.col = flr(rnd(16))
 		part.dx = (rnd(2)-1)*3
 		part.dy = (rnd(2)-1)*3
