@@ -119,6 +119,11 @@ function _draw()
 	--mask 2
 	spr(mask.sp,mask.x,mask.y,2,2)
 	
+	if(p.mort==true 
+	and p.cp==false) then
+		--restart game
+			print("you are dead ",p.x,p.y-51,9)
+	end
 	--sfx 
 	draw_explosions()
 	draw_particules()
@@ -300,6 +305,7 @@ function player_update()
 	and p.landed then
 		p.dy-=p.boost
 		p.landed = false
+		sfx(31)
 	end
  -------test por declenche fantome depuis tiles----
  --if (btnp(5)) detect_fait_fantome()
@@ -328,10 +334,16 @@ function player_update()
 	--if player collide with lava
 	if(collide_with(p,3)) then	
 		p.mort=true
-		p.x = cp.x
-		p.y = cp.y
-		p.mask = cp.mask
-		p.life = cp.life
+		sfx(32)
+		if(p.cp==true) then
+			p.x = cp.x
+			p.y = cp.y
+			p.mask = cp.mask
+			p.life = cp.life
+		else
+		--restart game
+		print("you are dead ",p.x,p.y-51,9)
+		end
 	end
 	--if player collides with cp save
 	if(collide_with(p,4)) then
