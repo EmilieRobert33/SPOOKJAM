@@ -40,7 +40,7 @@ function _init()
 	mask.y = 11*8
 	mask.w = 16
 	mask.h = 16
-	mask.sp = 46
+	mask.sp = 68
 	mask.taken = false
 	
 	
