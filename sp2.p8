@@ -65,9 +65,6 @@ function _init()
 	detect_fait_torch()
 	make_torche(x,y)
 	
-	--plateforme
-	make_plat(10,6)
-	
 	------------test---------
 	x1r=0 y1r=0 x2r=0 y2r=0
 	collide_l="no"
@@ -110,6 +107,10 @@ end
 function _draw()
 	cls()
  draw_fond()
+ --sfx 
+	draw_explosions()
+	draw_particules()
+	draw_torches()
 	map(0,0)
 	if p.dx<0 then
 		spr(p.sp,p.x-8,p.y,2,2,p.flp)
@@ -124,13 +125,7 @@ function _draw()
 		--restart game
 			print("you are dead ",p.x,p.y-51,9)
 	end
-	--sfx 
-	draw_explosions()
-	draw_particules()
-	draw_torches()
 	
-	--plateforme
-	draw_plat()
 	--------------------------
  --draw pour les fantomes
  --------------------------
@@ -165,8 +160,6 @@ function _update()
 	
 	--sfx
 	animate_torche()
-	--move plat by speed in parameters
-	move_plat(1)
  ---------------
  --ici c'est la lave
  -------------------	
@@ -568,22 +561,6 @@ function make_plat(x,y)
 	plat.sp = 65
 end
 
---move plateforme
-function move_plat(speed)
-	if(cos(0.25*t())>0) then
-		plat.dx +=speed
-		plat.x=plat.dx
-	end
-	if(cos(0.25*t())<0) then
-		plat.dx -=speed
-		plat.x=plat.dx
-	end
-end
-
---draw plateforme
-function draw_plat()
-	spr(plat.sp,plat.x,plat.y)
-end
 --explosion
 function make_explosions(x,y,nb)
 	while(nb > 0) do
