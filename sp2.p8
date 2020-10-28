@@ -357,6 +357,14 @@ function player_update()
      if (fants[i]!=nil) del (fants,fants[i]) 
   end
 	end
+	
+	--if p collides with moved plat
+	for pl in all(plat) do
+		if(check_col(p,pl)==true) then
+			p.landed = true
+		end
+	end
+	
 	p.x += p.dx
 	p.y += p.dy
 	
