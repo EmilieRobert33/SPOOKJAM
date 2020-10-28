@@ -23,7 +23,9 @@ function _init()
 	p.max_dy = 3
 	p.acc = 0.5
 	p.boost = 4.25
+	p.saut = 0
 	p.mask = 0
+	p.mask2 = 0
 	p.anim = 0
 	p.running = false
 	p.jumping = false
@@ -42,6 +44,15 @@ function _init()
 	mask.h = 16
 	mask.sp = 68
 	mask.taken = false
+	
+	--objet mask2
+	mask2 = {}
+	mask2.x = 6*8
+	mask2.y = 13*8
+	mask2.w = 16
+	mask2.h = 16
+	mask2.sp = 46
+	mask2.taken = false
 	
 	
 	gravity = 0.3
@@ -123,8 +134,11 @@ function _draw()
 	end
 	
 
-	--mask 2
+	--mask 1
 	spr(mask.sp,mask.x,mask.y,2,2)
+	
+	--mask 2
+	spr(mask2.sp,mask2.x,mask2.y,2,2)
 	
 	if(p.mort==true 
 	and p.cp==false) then
@@ -151,8 +165,8 @@ function _draw()
 	--print(p.sliding,p.x,p.y-34,8)
 	--print(p.running,p.x,p.y-28,9)
 	print(p.landed,p.x,p.y-20,10)
-	print("p.sp "..p.sp,p.x,p.y-45,7)
- print("p.dx "..p.dx,p.x,p.y-51,7)
+	print("p.saut "..p.saut,p.x,p.y-45,7)
+ print(p.mask2,p.x,p.y-51,7)
  
  ------------------------------
  -- dessine la vie
@@ -309,11 +323,12 @@ function player_update()
 		p.flp=false
 	end
 	
-	--jumping
+	--jumping p.landed
 	if(btnp(🅾️))
-	and p.landed then
+	and p.saut>0 then
 		p.dy-=p.boost
 		p.landed = false
+		p.saut-=1
 		sfx(31)
 	end
  -------test por declenche fantome depuis tiles----
@@ -321,11 +336,7 @@ function player_update()
 	
 	--if player collides with a mask
 	check_collision_m()
-	
-	--if player has mask 2
-	if (p.mask == 2) then
-		p.boost = 6
-	end
+	check_collision_m2()
 	
 	--mettre/enlever mask
 	player_mask()
@@ -430,6 +441,14 @@ function player_mask()
 			if(btnp(❎)) p.mask = 0
 		end
 	end
+	if(mask2.taken == true) then
+		if(p.mask2 == 0) then
+			if(btnp(❎)) p.mask2 = 1
+		elseif(p.mask2 == 1) then
+		 if (btnp(🅾️)) p.saut=2
+			if (btnp(❎)) p.mask2 = 0
+		end
+	end
 end
 
 function check_collision_m()
@@ -443,6 +462,16 @@ function check_collision_m()
 	end
 end
 
+function check_collision_m2()
+	if(check_coll(p,mask2)
+	and mask2.taken == false) then
+		make_explosions(mask2.x,mask.y,15)
+		make_particules(mask2.x,mask.y,16)
+		mask2.sp = 105
+		mask2.taken = true
+	end
+end
+
 function check_collision_ud()
 	if(p.dy>0) then
 		p.falling=true
@@ -453,6 +482,7 @@ function check_collision_ud()
 		
 		if(collide_map(p,"down",0)) then
 			p.landed= true
+			p.saut = 1
 			p.falling= false
 			p.dy=0
 			p.y-=((p.y+p.h+1)%8)-1
