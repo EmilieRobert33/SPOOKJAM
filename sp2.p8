@@ -61,6 +61,9 @@ function _init()
 	particules = {}
 	explosions = {}
 	
+	--plateforme
+	make_plat(10,6)
+	
 	------------test---------
 	x1r=0 y1r=0 x2r=0 y2r=0
 	collide_l="no"
@@ -115,6 +118,9 @@ function _draw()
 	--sfx 
 	draw_explosions()
 	draw_particules()
+	
+	--plateforme
+	draw_plat()
 	--------------------------
  --draw pour les fantomes
  --------------------------
@@ -146,6 +152,9 @@ function _update()
 	player_animate()
  update_f()
 	camera_update()
+	
+	--move plat by speed in parameters
+	move_plat(1)
  ---------------
  --ici c'est la lave
  -------------------	
@@ -491,7 +500,32 @@ end
 ---test----
 -->8
 --sfx
+--plateformes qui bougent
+function make_plat(x,y)
+	plat={}
+	plat.x = x*8
+	plat.y = y*8
+	plat.dx = 0
+	plat.dy = 0
+	plat.sp = 65
+end
 
+--move plateforme
+function move_plat(speed)
+	if(cos(0.25*t())>0) then
+		plat.dx +=speed
+		plat.x=plat.dx
+	end
+	if(cos(0.25*t())<0) then
+		plat.dx -=speed
+		plat.x=plat.dx
+	end
+end
+
+--draw plateforme
+function draw_plat()
+	spr(plat.sp,plat.x,plat.y)
+end
 --explosion
 function make_explosions(x,y,nb)
 	while(nb > 0) do
