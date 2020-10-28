@@ -13,7 +13,7 @@ function _init()
  ------------------
 	p.sp = 32
 	p.x = 64
-	p.y = 40
+	p.y = 210
 	p.dx = 0
 	p.dy = 0
 	p.w = 8
@@ -738,9 +738,11 @@ if (fants_f>14) fants_f=10
  for i=1,#fants do
   if (p.mask!=1 and bug_p==0 and temps<=-20)then
  -- sfx(30,1)
-   if (abs(p.x-fants[i].x)< 90 and temps<=0) bug_p+=1
-   if (abs(p.x-fants[i].x)< 50 and temps<=0) bug_p+=1
-   if (abs(p.x-fants[i].x)< 30 and temps<=0) bug_p+=1
+   if (abs(p.y-fants[i].y)< 50) then
+    if (abs(p.x-fants[i].x)< 20 and temps<=0) bug_p+=1
+    if (abs(p.x-fants[i].x)< 35 and temps<=0) bug_p+=1
+    if (abs(p.x-fants[i].x)< 50 and temps<=0) bug_p+=1
+   end
   end
  end 
 end
