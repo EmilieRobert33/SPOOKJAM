@@ -30,6 +30,7 @@ function _init()
 	p.falling = false
 	p.sliding = false
 	p.landed = false
+	p.idle = false
 	
 	--objet mask
 	mask = {}
@@ -118,11 +119,15 @@ function _draw()
  dr_fant()
 	----------test----------
 	rect(x1r,y1r,x2r,y2r,7)
-	print("⬅️ "..collide_l,p.x,p.y-10)
-	print("➡️ "..collide_r,p.x,p.y-18)
-	print("⬆️ "..collide_u,p.x,p.y-26)
-	print("⬇️ "..collide_d,p.x,p.y-34)
-	print("p.sp "..p.sp,p.x,p.y-45)
+	--print("⬅️ "..collide_l,p.x,p.y-10)
+	--print("➡️ "..collide_r,p.x,p.y-18)
+--	print("⬆️ "..collide_u,p.x,p.y-26)
+	--print("⬇️ "..collide_d,p.x,p.y-34)
+	print(p.sliding,p.x,p.y-34,8)
+	print(p.running,p.x,p.y-28,9)
+	print(p.idle,p.x,p.y-20,10)
+	print("p.sp "..p.sp,p.x,p.y-45,7)
+ print("p.dx "..p.dx,p.x,p.y-51,7)
  
  ------------------------------
  -- dessine la vie
@@ -261,13 +266,13 @@ function player_update()
 	p.dx *= friction
 	
 	--controls
-	if btn(0) then 
+	if (btn(0)) then 
 		p.dx-=p.acc
 		p.running=true
 		p.flp=true
 	end
 	if btn(1) then
-		p.dx +=p.acc
+		p.dx+=p.acc
 		p.running=true
 		p.flp=false
 	end
@@ -282,13 +287,7 @@ function player_update()
  --if (btnp(5)) detect_fait_fantome()
 	
 	--if player collides with a mask
-	if(check_coll(p,mask)
-	and mask.taken == false) then
-		make_explosions(mask.x,mask.y,15)
-		make_particules(16)
-		mask.sp = 100
-		mask.taken = true
-	end
+	check_collision_m()
 	
 	--if player has mask 2
 	if (p.mask == 2) then
@@ -296,28 +295,81 @@ function player_update()
 	end
 	
 	--mettre/enlever mask
+	player_mask()
+	
+	--slide
+	player_slide()
+	
+		
+	--check collisions up and down
+	check_collision_ud()
+	
+	--check collisions left and right
+	check_collision_rl()
+		
+	
+	p.x += p.dx
+	p.y += p.dy
+	
+	--limit player to the map
+	limit_map()
+end
+
+function player_animate()
+	if p.jumping then
+		p.sp = 7
+	elseif p.falling then
+		p.sp = 38
+	elseif p.sliding then
+		p.sp = 44
+	elseif p.running then
+		if time()-p.anim>.1 then
+			p.anim=time()
+			p.sp+=2
+			if p.sp>5 then
+				p.sp=1
+			end
+		end
+	else -- player idle
+		if time()-p.anim>.5 then
+			p.anim=time()
+			p.sp+=2
+			if p.sp>36 then
+				p.sp=32
+			end
+		end
+	end
+end
+
+function limit_speed(num,maximum)
+	return mid(-maximum,num,maximum)
+end
+
+function player_mask()
 	if(mask.taken == true) then
 		if(p.mask == 0) then
-			if(btnp(❎)) p.mask = 1
+			if(btnp(❎)) then
+			 p.mask = 1
+			end
 		elseif(p.mask == 1) then
 		 p.dx = 0
 			p.dy = 0
 			if(btnp(❎)) p.mask = 0
 		end
 	end
-	
-	--slide
-	if p.running 
-	and not (btn(1))
-	and not (btn(0))
-	and not p.falling
-	and not p.jumping then
-			p.running = false
-			p.sliding = true
+end
+
+function check_collision_m()
+	if(check_coll(p,mask)
+	and mask.taken == false) then
+		make_explosions(mask.x,mask.y,15)
+		make_particules(16)
+		mask.sp = 100
+		mask.taken = true
 	end
-		
-	
-	--check collisions up and down
+end
+
+function check_collision_ud()
 	if(p.dy>0) then
 		p.falling=true
 		p.landed=false
@@ -349,18 +401,18 @@ function player_update()
 		
 		end
 	end
-	
-	--check collisions left and right
+end-----fin check col ud
+
+function check_collision_rl()
 	if (p.dx<0) then
 	
 	p.dy=limit_speed(p.dy,p.max_dy)
 		if(collide_map(p,"left",0)) then
 			p.dx=0
-			
-			-----test-----------
-			collide_l = "yes"
-			else collide_l="no"
-			--------------------
+		-----test-----------
+		collide_l = "yes"
+		else collide_l="no"
+		--------------------
 			
 		end
 	elseif (p.dx>0) then
@@ -368,29 +420,15 @@ function player_update()
 	p.dy=limit_speed(p.dy,p.max_dy)
 		if(collide_map(p,"right",0)) then
 			p.dx=0
-			
-			-----test-----------
-			collide_r = "yes"
-			else collide_r="no"
-			--------------------
-			
+		-----test-----------
+		collide_r = "yes"
+		else collide_r="no"
+		--------------------
 		end
 	end
-	
-	--stop sliding
-	if(p.sliding) then
-		if abs(p.dx)<.2
-		or p.running then
-			p.dx=0
-			p.sliding=false
-		end
-	
-	end
-	
-	p.x += p.dx
-	p.y += p.dy
-	
-	--limit player to the map
+end
+
+function limit_map()
 	if (p.x<mapw_start) then
 		p.x=mapw_start
 	end
@@ -399,35 +437,32 @@ function player_update()
 	end
 end
 
-function player_animate()
-	if p.jumping then
-		p.sp = 44
-	elseif p.falling then
-		p.sp = 42
-	elseif p.sliding then
-		p.sp = 44
-	elseif p.running then
-		if time()-p.anim>.1 then
-			p.anim=time()
-			p.sp+=2
-			if p.sp>5 then
-				p.sp=3
-			end
-		end
-	else -- player idle
-		if time()-p.anim>.5 then
-			p.anim=time()
-			p.sp+=2
-			if p.sp>36 then
-				p.sp=32
-			end
-		end
+function player_slide()
+	if p.running 
+	and not (btn(1))
+	and not (btn(0))
+	and not p.falling
+	and not p.jumping then
+			p.running = false
+			p.sliding = true	
+	end
+	
+	--stop sliding
+	if(p.sliding) then
+		if abs(p.dx)==.2
+		or p.running then
+			p.dx=0
+			p.sliding=false
+	--stop sliding with mask
+		elseif(p.running 
+		and btnp(❎)) then
+			p.dx=0
+			p.sliding=false
+		end	
 	end
 end
 
-function limit_speed(num,maximum)
-	return mid(-maximum,num,maximum)
-end
+
 -->8
 --sfx
 
