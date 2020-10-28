@@ -23,7 +23,9 @@ function _init()
 	p.max_dy = 3
 	p.acc = 0.5
 	p.boost = 4.25
+	p.jump = 0
 	p.mask = 0
+	p.mask2 = 0
 	p.anim = 0
 	p.running = false
 	p.jumping = false
@@ -42,6 +44,15 @@ function _init()
 	mask.h = 16
 	mask.sp = 68
 	mask.taken = false
+	
+	--objet mask
+	mask2 = {}
+	mask2.x = 3*8
+	mask2.y = 15*8
+	mask2.w = 16
+	mask2.h = 16
+	mask2.sp = 46
+	mask2.taken = false
 	
 	
 	gravity = 0.3
@@ -126,9 +137,10 @@ function _draw()
   --rectfill(p.x,p.y,p.x+15,p.y+6,0)
   spr(74,p.x+4,p.y)
  end
-	--mask 2
+	--mask 1
 	spr(mask.sp,mask.x,mask.y,2,2)
-	
+	--mask 2
+	spr(mask2.sp,mask2.x,mask2.y,2,2)
 	if(p.mort==true 
 	and p.cp==false) then
 		--restart game
@@ -314,9 +326,10 @@ function player_update()
 	
 	--jumping
 	if(btnp(🅾️))
-	and p.landed then
+	and p.saut == 1 then
 		p.dy-=p.boost
 		p.landed = false
+		p.saut -= 1
 		sfx(31)
 	end
  -------test por declenche fantome depuis tiles----
@@ -324,7 +337,7 @@ function player_update()
 	
 	--if player collides with a mask
 	check_collision_m()
-	
+	check_collision_m2()
 	--if player has mask 2
 	if (p.mask == 2) then
 		p.boost = 6
@@ -433,6 +446,14 @@ function player_mask()
 			if(btnp(❎)) p.mask = 0
 		end
 	end
+	if(mask2.taken == true) then
+		if(p.mask2 == 0) then
+			if(btnp(❎)) p.mask2 = 1		
+		elseif(p.mask2 == 1) then
+		 if(btnp(🅾️)) p.saut = 1
+			if(btnp(❎)) p.mask2 = 0
+		end
+	end
 end
 
 function check_collision_m()
@@ -442,6 +463,17 @@ function check_collision_m()
 		make_particules(mask.x,mask.y,16)
 		mask.sp = 105
 		mask.taken = true
+  detect_fait_fantome()
+	end
+end
+
+function check_collision_m2()
+	if(check_coll(p,mask2)
+	and mask2.taken == false) then
+		make_explosions(mask2.x,mask2.y,15)
+		make_particules(mask2.x,mask2.y,16)
+		mask2.sp = 105
+		mask2.taken = true
   detect_fait_fantome()
 	end
 end
@@ -458,6 +490,7 @@ function check_collision_ud()
 			p.landed= true
 			p.falling= false
 			p.dy=0
+			p.saut = 1
 			p.y-=((p.y+p.h+1)%8)-1
 			
 			-----test-----------
