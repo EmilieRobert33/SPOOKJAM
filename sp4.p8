@@ -72,7 +72,7 @@ function _init()
 	particules = {}
 	explosions = {}
 	torches = {}
-	
+	music(00)
 	detect_fait_torch()
 	make_torche(x,y)
 	
