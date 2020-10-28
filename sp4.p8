@@ -712,10 +712,10 @@ if (fants_f>14) fants_f=10
  elseif p.mask==1 then
   if timer_f<0 then --avec port du mask on go
    for i=1,#fants do
-    if (p.x>=fants[i].x) fants[i].x-=0.15
-    if (p.x<=fants[i].x) fants[i].x+=0.15
-    if (p.y<=fants[i].y) fants[i].y-=0.15
-    if (p.y>=fants[i].y) fants[i].y+=0.15
+    if (p.x>=fants[i].x) fants[i].x-=0.5
+    if (p.x<=fants[i].x) fants[i].x+=0.5
+    if (p.y<=fants[i].y) fants[i].y+=0.5
+    if (p.y>=fants[i].y) fants[i].y-=0.5
    end
    else 
     timer_f-=1
@@ -924,14 +924,14 @@ end
 
 -----test por le fond --------
 function draw_fond()
- cal=128
+ cal=140
  rectfill(0,cal,128*8,cal+64,0)
  rectfill(0,cal+64,128*8,cal+128,1)
  rectfill(0,cal+100,128*8,cal+228,2)
  for i=1,#dither do
   fillp(dither[#dither-i])
   pal(0,0)
-  rectfill(0,cal+4*i,128*8,cal+4*i+8,1)
+  rectfill(0,cal+4+4*i,128*8,cal+4*i+8,1)
   pal(0,1)
   rectfill(0,cal+50+4*i,128*8,50+cal+4*i+8,2)
   pal()
