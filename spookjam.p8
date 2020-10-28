@@ -30,7 +30,7 @@ function _init()
 	p.falling = false
 	p.sliding = false
 	p.landed = false
-	p.idle = false
+	p.idle = true
 	
 	--objet mask
 	mask = {}
@@ -326,7 +326,7 @@ function player_animate()
 		if time()-p.anim>.1 then
 			p.anim=time()
 			p.sp+=2
-			if p.sp>5 then
+			if p.sp>7 then
 				p.sp=1
 			end
 		end
@@ -442,24 +442,27 @@ function player_slide()
 	and not (btn(1))
 	and not (btn(0))
 	and not p.falling
-	and not p.jumping then
+	and not p.jumping 
+	 then
 			p.running = false
 			p.sliding = true	
 	end
 	
-	--stop sliding
+	--stop sliding with wall
 	if(p.sliding) then
 		if abs(p.dx)==.2
-		or p.running then
+		or p.running 
+		 then
 			p.dx=0
 			p.sliding=false
 	--stop sliding with mask
 		elseif(p.running 
 		and btnp(❎)) then
 			p.dx=0
-			p.sliding=false
-		end	
+			p.sliding=false	
+		end
 	end
+	
 end
 
 
@@ -803,13 +806,7 @@ function draw_lave()
  for n=1,#lave do 
   for i=0,7 do
    for y=0,7 do
-    if (y<=2) then
-     palt(0,true)
-     pset(lave[n].x+i,lave[n].y+y,rnd({7,8,9,10,2,0}))
-     palt(0,false)
-    else
-     pset(lave[n].x+i,lave[n].y+y,rnd(lave_pal))
-    end
+    pset(lave[n].x+i,lave[n].y+y,rnd(lave_pal))
    end
   end
  end
