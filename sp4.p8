@@ -104,6 +104,7 @@ end
 
 -->8
 --update and draw
+--git je je t'emmerde!!!
 
 function _draw()
 	cls()
