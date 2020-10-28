@@ -768,7 +768,13 @@ function draw_lave()
  for n=1,#lave do 
   for i=0,7 do
    for y=0,7 do
-    pset(lave[n].x+i,lave[n].y+y,rnd(lave_pal))
+    if (y<=2) then
+     palt(0,true)
+     pset(lave[n].x+i,lave[n].y+y,rnd({7,8,9,10,2,0}))
+     palt(0,false)
+    else
+     pset(lave[n].x+i,lave[n].y+y,rnd(lave_pal))
+    end
    end
   end
  end
