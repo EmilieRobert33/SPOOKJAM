@@ -110,14 +110,16 @@ function _draw()
  draw_fond()
  --sfx 
 	draw_explosions()
-	draw_particules()
 	draw_torches()
+	draw_particules()
 	map(0,0)
 	if p.dx<0 then
 		spr(p.sp,p.x-8,p.y,2,2,p.flp)
 	else
 		spr(p.sp,p.x,p.y,2,2,p.flp)
 	end
+	
+
 	--mask 2
 	spr(mask.sp,mask.x,mask.y,2,2)
 	
@@ -347,7 +349,6 @@ function player_update()
 			p.y = cp.y
 			p.mask = cp.mask
 			p.life = cp.life
-			make_particules(25)
 		else
 		--restart game
 		print("you are dead ",p.x,p.y-51,9)
