@@ -362,7 +362,6 @@ function player_update()
      if (fants[i]!=nil) del (fants,fants[i]) 
   end
 	end
-<<<<<<< HEAD
 	
 	--if p collides with moved plat
 	for pl in all(plat) do
@@ -373,8 +372,6 @@ function player_update()
 		end
 	end
 	
-=======
->>>>>>> 5ffa7aa... calage déco ext
 	p.x += p.dx
 	p.y += p.dy
 	
