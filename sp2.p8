@@ -362,6 +362,7 @@ function player_update()
      if (fants[i]!=nil) del (fants,fants[i]) 
   end
 	end
+<<<<<<< HEAD
 	
 	--if p collides with moved plat
 	for pl in all(plat) do
@@ -372,6 +373,8 @@ function player_update()
 		end
 	end
 	
+=======
+>>>>>>> 5ffa7aa... calage déco ext
 	p.x += p.dx
 	p.y += p.dy
 	
@@ -919,15 +922,16 @@ end
 
 -----test por le fond --------
 function draw_fond()
- rectfill(0,0,128*8,64,0)
- rectfill(0,64,128*8,128,1)
- rectfill(0,100,128*8,228,2)
+ cal=128
+ rectfill(0,cal,128*8,cal+64,0)
+ rectfill(0,cal+64,128*8,cal+128,1)
+ rectfill(0,cal+100,128*8,cal+228,2)
  for i=1,#dither do
   fillp(dither[#dither-i])
   pal(0,0)
-  rectfill(0,4*i,128*8,4*i+8,1)
+  rectfill(0,cal+4*i,128*8,cal+4*i+8,1)
   pal(0,1)
-  rectfill(0,50+4*i,128*8,50+4*i+8,2)
+  rectfill(0,cal+50+4*i,128*8,50+cal+4*i+8,2)
   pal()
   fillp()
  end
