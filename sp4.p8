@@ -4,6 +4,7 @@ __lua__
 --variables for p and obj
 function _init()
 	p = {}
+ p.t=t()
  -----------------
  --gestion de la vie
  ------------------
@@ -124,13 +125,14 @@ function _draw()
 	cls()
  draw_fond()
  --sfx 
- draw_info(p.infob1,p.infob2)
+ 
 	draw_explosions()
 	draw_torches()
 
 	draw_particules()
 
 	map(0,0,0,0,128,128)--,0,0,64,64)
+ draw_info(p.infob1,p.infob2)
 	--draw player
 	if p.dx<0 then
 		spr(p.sp,p.x-8,p.y,2,2,p.flp)
@@ -1024,7 +1026,7 @@ function p_vie() --perte d'un coeur
 end
 
 function draw_life()
-  print(p.life,cam_x,cam_y,8)
+  print(p.life..(t()-p.t),cam_x,cam_y,8)
 end
 -----------------------------------
 -- on fait la lave
