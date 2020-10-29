@@ -28,6 +28,7 @@ function _init()
 	p.jump = 0
 	p.mask = 0
 	p.mask2 = 0
+	p.porte = 0
 	p.anim = 0
 	p.running = false
 	p.jumping = false
@@ -141,7 +142,6 @@ function _draw()
   --rectfill(p.x,p.y,p.x+15,p.y+6,0)
   spr(74,p.x+4,p.y)
  end
- 
  --p porte mask2
  if (p.mask2==1) then
   spr(75,p.x+3,p.y)
@@ -150,7 +150,7 @@ function _draw()
 	spr(mask.sp,mask.x,mask.y,2,2)
 	--mask 2
 	draw_mask2s()
-	--spr(mask2.sp,mask2.x,mask2.y,2,2)
+	
 	if(p.mort==true 
 	and p.cp==false) then
 		--restart game
@@ -181,9 +181,10 @@ function _draw()
 	--print("⬇️ "..collide_d,p.x,p.y-34)
 	--print(p.sliding,p.x,p.y-34,8)
 	--print(p.running,p.x,p.y-28,9)
-	--print(p.landed,p.x,p.y-20,10)
+	print("mask porte"..p.porte,p.x,p.y-20,10)
 	print("p.mask2 "..p.mask2,p.x,p.y-45,7)
  print("p saut "..p.jump,p.x,p.y-51,7)
+ --print("p jump_mask "..p.jump_mask,p.x,p.y-30,7)
  
  ------------------------------
  -- dessine la vie
@@ -358,8 +359,8 @@ function player_update()
 	check_collision_m()
 	check_collision_m2()
 	--if player has mask 2
-	if (p.mask == 2) then
-		p.boost = 6
+	if (p.jump == 2) then
+		p.jump_mask = 2
 	end
 	
 	--mettre/enlever mask
@@ -368,6 +369,8 @@ function player_update()
 	--slide
 	player_slide()
 	
+	--si mask porte
+	--if(p.porte==1 and btnp(❎)) p_vie()
 		
 	--check collisions up and down
 	check_collision_ud()
@@ -458,10 +461,12 @@ function player_mask()
 		if(p.mask == 0) then
 			if(btnp(❎)) then
 			 p.mask = 1
+			 p.porte = 0
 			end
 		elseif(p.mask == 1) then
 		 p.dx = 0
 			p.dy = 0
+			p.porte = 1
 			if(btnp(❎)) p.mask = 0
 		end
 	end
@@ -470,15 +475,18 @@ function player_mask()
 			if(p.mask2 == 0) then
 				if(btnp(❎)) then
 					p.mask2 = 1	
+					p_vie()
 				end 	
 			elseif(p.mask2 == 1) then
 				p.jump=2
 				p.dy = 0
-			 p.dx = 0		 
+			 p.dx = 0
+			 p.porte = 1	
 				if(btnp(❎)) then
 					p.mask2 = 0
+					p.porte = 0
 				end
-			end
+			end		
 		end
 	end	
 end
@@ -522,7 +530,11 @@ function check_collision_ud()
 			p.landed= true
 			p.falling= false
 			p.dy=0
-			p.jump = 1
+			if(p.jump == 2) then
+			 p.jump =2
+			else
+				p.jump = 1
+			end
 			p.y-=((p.y+p.h+1)%8)-1
 			
 			-----test-----------
