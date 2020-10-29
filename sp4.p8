@@ -50,7 +50,7 @@ function _init()
 	mask.taken = false
 	
 	mask_l = {}
-	mask_l.choisi = 2
+	mask_l.choisi = 0
 	
 	mask2s={}
 	
@@ -170,7 +170,7 @@ function _draw()
 	--draw mask item
 	if(mask.taken == true) then
 		if(mask_l.choisi == 0) then
-			rectfill(cam_x,cam_y+10,cam_x+7,cam_y+17,8)
+			rectfill(cam_x,cam_y+10,cam_x+7,cam_y+17,11)
 		end
 		spr(74,cam_x,cam_y+10)
 	end
@@ -178,7 +178,7 @@ function _draw()
 	for mask2 in all(mask2s) do
 		if(mask2.taken == true) then
 			if(mask_l.choisi == 1) then
-			rectfill(cam_x+10,cam_y+10,cam_x+17,cam_y+17,8)
+			rectfill(cam_x+10,cam_y+10,cam_x+17,cam_y+17,11)
 			end
 			spr(75,cam_x+10,cam_y+10)
 		end
@@ -403,6 +403,7 @@ function player_update()
 			p.x = cp.x
 			p.y = cp.y
 			p.mask = cp.mask
+			p.mask2 = cp.mask2
 			p.life = cp.life
 		else
 		--restart game
@@ -415,7 +416,8 @@ function player_update()
 	 cp ={}
 		cp.x = p.x
 		cp.y = p.y
-		cp.mask = p.mask
+		cp.mask = 0
+		cp.mask2 = 0	
 		cp.life = p.life
   --detruit fants
   for i=1,#fants do
@@ -506,7 +508,7 @@ end
 
 function choix_mask()
 	if (btnp(⬇️)) then
-		if(mask_l.choisi >=2) then
+		if(mask_l.choisi >=1) then
 			mask_l.choisi = 0
 		else
 			mask_l.choisi += 1
