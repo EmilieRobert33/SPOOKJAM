@@ -711,6 +711,9 @@ function make_f(x,y)
 end
 
 function draw_f()
+if fants[1]!=nil then
+print(abs(fants[1].x-p.x),p.x,p.y+20,8)
+end
  if (p.mask==1) then
   for i=1,#fants do
    if (fants[i].x<p.x) then
@@ -744,18 +747,46 @@ if (fants_f>14) fants_f=10
  if p.mask==0 then --sans port du masque on s'approche
   timer_f=40
   for i=1,#fants do
-   if (p.x>=fants[i].x) fants[i].x+=0.15
-   if (p.x<=fants[i].x) fants[i].x-=0.15
-   if (p.y<=fants[i].y) fants[i].y-=0.15
-   if (p.y>=fants[i].y) fants[i].y+=0.15
+   if (p.x>=fants[i].x) then
+    fants[i].x+=0.15
+    if (abs((fants[i].x)-p.x)<16) p.mort=true--
+   end
+   if (p.x<=fants[i].x) then 
+    fants[i].x-=0.15
+    if (abs(fants[i].x-(p.x+16))<2) p.mort=true
+   end
+   if (p.y<=fants[i].y) then
+    fants[i].y-=0.15
+    if (abs(fants[i].y-(p.y+16))<2) p.mort=true
+   end
+   if (p.y>=fants[i].y) then
+    fants[i].y+=0.15
+    if (abs((fants[i].y+16)-p.y)<2) p.mort=true
+   end  
   end
  elseif p.mask==1 then
   if timer_f<0 then --avec port du mask on go
    for i=1,#fants do
-    if (p.x>=fants[i].x) fants[i].x-=0.5
-    if (p.x<=fants[i].x) fants[i].x+=0.5
-    if (p.y<=fants[i].y) fants[i].y+=0.5
-    if (p.y>=fants[i].y) fants[i].y-=0.5
+   if (p.x>=fants[i].x) then
+    fants[i].x+=0.15
+    if (abs((fants[i].x)-p.x)<16) p.mort=true
+   end
+   if (p.x<=fants[i].x) then 
+    fants[i].x-=0.15
+    if (abs(fants[i].x-(p.x+16))<2) p.mort=true
+   end
+   if (p.y<=fants[i].y) then
+    fants[i].y-=0.15
+    if (abs(fants[i].y-(p.y+16))<2) p.mort=true
+   end
+   if (p.y>=fants[i].y) then
+    fants[i].y+=0.15
+    if (abs((fants[i].y+16)-p.y)<2) p.mort=true
+   end 
+   -- if (p.x>=fants[i].x) fants[i].x-=0.5
+   -- if (p.x<=fants[i].x) fants[i].x+=0.5
+   -- if (p.y<=fants[i].y) fants[i].y+=0.5
+   -- if (p.y>=fants[i].y) fants[i].y-=0.5
    end
    else 
     timer_f-=1
