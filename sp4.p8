@@ -49,14 +49,9 @@ function _init()
 	mask.sp = 68
 	mask.taken = false
 	
-	--objet mask
-	--mask2 = {}
-	--mask2.x = 3*8
-	--mask2.y = 15*8
-	--mask2.w = 16
-	--mask2.h = 16
-	--mask2.sp = 46
-	--mask2.taken = false
+	mask_l = {}
+	mask_l.choisi = 2
+	
 	mask2s={}
 	
 	gravity = 0.3
@@ -166,27 +161,44 @@ function _draw()
  draw_co()
 	----------test----------
 	draw_plat()
-	rect(x1r,y1r,x2r,y2r,7)
+	--collision player
+	--rect(x1r,y1r,x2r,y2r,7)
 	--for pl in all(plat) do
 		--rectfill(pl.x,pl.y,pl.x+pl.w,pl.y+pl.h,7)		
 	--end
+	
+	--draw mask item
+	if(mask.taken == true) then
+		if(mask_l.choisi == 0) then
+			rectfill(cam_x,cam_y+10,cam_x+7,cam_y+17,8)
+		end
+		spr(74,cam_x,cam_y+10)
+	end
+	
 	for mask2 in all(mask2s) do
+		if(mask2.taken == true) then
+			if(mask_l.choisi == 1) then
+			rectfill(cam_x+10,cam_y+10,cam_x+17,cam_y+17,8)
+			end
+			spr(75,cam_x+10,cam_y+10)
+		end
 		--rectfill(mask2.x,mask2.y,mask2.x+mask2.w,mask2.y+mask2.h,7)
 		--print("mask2 x"..mask2.x, p.x,p.y-10,7)
 		--print("mask apparition",p.x,p.y-20,7)
-		print(mask2.taken,p.x,p.y-25,7)
+		--print(mask2.taken,p.x,p.y-25,7)
 	end
 	
+	--print(mask.taken,p.x,p.y-25,7)
 	--print("⬅️ "..collide_l,p.x,p.y-10)
 	--print("➡️ "..collide_r,p.x,p.y-18)
  --print("⬆️ "..collide_u,p.x,p.y-26)
 	--print("⬇️ "..collide_d,p.x,p.y-34)
 	--print(p.sliding,p.x,p.y-34,8)
 	--print(p.running,p.x,p.y-28,9)
-	print("mask porte"..p.porte,p.x,p.y-20,10)
-	print("p.mask2 "..p.mask2,p.x,p.y-45,7)
- print("p saut "..p.jump,p.x,p.y-51,7)
- --print("p jump_mask "..p.jump_mask,p.x,p.y-30,7)
+	--print("mask porte"..p.porte,p.x,p.y-20,10)
+	--print("p.mask2 "..p.mask2,p.x,p.y-45,7)
+ --print("p saut "..p.jump,p.x,p.y-51,7)
+ print("mask choisi "..mask_l.choisi,p.x,p.y-30,7)
  
  ------------------------------
  -- dessine la vie
@@ -371,8 +383,8 @@ function player_update()
 	--slide
 	player_slide()
 	
-	--si mask porte
-	--if(p.porte==1 and btnp(❎)) p_vie()
+	--choix mask
+	choix_mask()
 		
 	--check collisions up and down
 	check_collision_ud()
@@ -461,21 +473,22 @@ end
 function player_mask()
 	if(mask.taken == true) then
 		if(p.mask == 0) then
-			if(btnp(❎)) then
+			if(btnp(❎))
+			and mask_l.choisi == 0 then
 			 p.mask = 1
-			 p.porte = 0
+			 p_vie()
 			end
 		elseif(p.mask == 1) then
 		 p.dx = 0
 			p.dy = 0
-			p.porte = 1
 			if(btnp(❎)) p.mask = 0
 		end
 	end
 	for mask2 in all(mask2s) do
 		if(mask2.taken == true) then
 			if(p.mask2 == 0) then
-				if(btnp(❎)) then
+				if(btnp(❎))
+				and mask_l.choisi == 1 then
 					p.mask2 = 1	
 					p_vie()
 				end 	
@@ -483,15 +496,24 @@ function player_mask()
 				p.jump=2
 				p.dy = 0
 			 p.dx = 0
-			 p.porte = 1	
 				if(btnp(❎)) then
 					p.mask2 = 0
-					p.porte = 0
 				end
 			end		
 		end
 	end	
 end
+
+function choix_mask()
+	if (btnp(⬇️)) then
+		if(mask_l.choisi >=2) then
+			mask_l.choisi = 0
+		else
+			mask_l.choisi += 1
+		end
+	end		 
+end
+
 
 function check_collision_m()
 	if(check_coll(p,mask)
