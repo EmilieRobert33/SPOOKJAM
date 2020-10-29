@@ -155,10 +155,9 @@ function _draw()
 	----------test----------
 	draw_plat()
 	rect(x1r,y1r,x2r,y2r,7)
-	for pl in all(plat) do
-		rectfill(pl.x,pl.y,pl.x+pl.w,pl.y+pl.h,7)
-		
-	end
+	--for pl in all(plat) do
+		--rectfill(pl.x,pl.y,pl.x+pl.w,pl.y+pl.h,7)		
+	--end
 	for mask2 in all(mask2s) do
 		--rectfill(mask2.x,mask2.y,mask2.x+mask2.w,mask2.y+mask2.h,7)
 		--print("mask2 x"..mask2.x, p.x,p.y-10,7)
@@ -168,13 +167,13 @@ function _draw()
 	
 	--print("⬅️ "..collide_l,p.x,p.y-10)
 	--print("➡️ "..collide_r,p.x,p.y-18)
---	print("⬆️ "..collide_u,p.x,p.y-26)
+ --print("⬆️ "..collide_u,p.x,p.y-26)
 	--print("⬇️ "..collide_d,p.x,p.y-34)
 	--print(p.sliding,p.x,p.y-34,8)
 	--print(p.running,p.x,p.y-28,9)
 	--print(p.landed,p.x,p.y-20,10)
-	--print("p.sp "..p.sp,p.x,p.y-45,7)
- --print("p.dx "..p.dx,p.x,p.y-51,7)
+	print("p.mask2 "..p.mask2,p.x,p.y-45,7)
+ print("p saut "..p.jump,p.x,p.y-51,7)
  
  ------------------------------
  -- dessine la vie
@@ -334,10 +333,10 @@ function player_update()
 	
 	--jumping
 	if(btnp(🅾️))
-	and p.saut == 1 then
+	and p.jump > 0 then
 		p.dy-=p.boost
 		p.landed = false
-		p.saut -= 1
+		p.jump -= 1
 		sfx(31)
 	end
  -------test por declenche fantome depuis tiles----
@@ -457,10 +456,16 @@ function player_mask()
 	for mask2 in all(mask2s) do
 		if(mask2.taken == true) then
 			if(p.mask2 == 0) then
-				if(btnp(❎)) p.mask2 = 1		
+				if(btnp(❎)) then
+					p.mask2 = 1	
+				end 	
 			elseif(p.mask2 == 1) then
-			 if(btnp(🅾️)) p.saut = 1
-				if(btnp(❎)) p.mask2 = 0
+				p.jump=2
+				p.dy = 0
+			 p.dx = 0		 
+				if(btnp(❎)) then
+					p.mask2 = 0
+				end
 			end
 		end
 	end	
@@ -501,7 +506,7 @@ function check_collision_ud()
 			p.landed= true
 			p.falling= false
 			p.dy=0
-			p.saut = 1
+			p.jump = 1
 			p.y-=((p.y+p.h+1)%8)-1
 			
 			-----test-----------
