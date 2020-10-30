@@ -814,7 +814,7 @@ end
 
 function draw_f()
 if fants[1]!=nil then
-print(abs(fants[1].x-p.x),p.x,p.y+20,8)
+--print(abs(fants[1].x-p.x),p.x,p.y+20,8)
 end
  if (p.mask==1) then
   for i=1,#fants do
@@ -826,7 +826,7 @@ end
   end
  else
   for i=1,#fants do
-   circfill(fants[i].x,fants[i].y,3,8)
+   circ(fants[i].x,fants[i].y,3,12)
   end
  end
  draw_s()
@@ -877,19 +877,19 @@ if (fants_f>14) fants_f=10
   timer_f=40
   for i=1,#fants do
    if (p.x>=fants[i].x) then
-    fants[i].x+=0.15
+    fants[i].x+=0.3
    -- if (abs((fants[i].x)-p.x)<16) p.mort=true--
    end
    if (p.x<=fants[i].x) then 
-    fants[i].x-=0.15
+    fants[i].x-=0.3
     --if (abs(fants[i].x-(p.x+16))<2) p.mort=true
    end
    if (p.y<=fants[i].y) then
-    fants[i].y-=0.15
+    fants[i].y-=0.3
     --if (abs(fants[i].y-(p.y+16))<2) p.mort=true
    end
    if (p.y>=fants[i].y) then
-    fants[i].y+=0.15
+    fants[i].y+=0.3
     --if (abs((fants[i].y+16)-p.y)<2) p.mort=true
    end  
   end
