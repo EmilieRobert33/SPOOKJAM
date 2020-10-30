@@ -295,7 +295,7 @@ function draw_jeux()
 	----------test----------
 	draw_plat()
 	--collision player
-	--rect(x1r,y1r,x2r,y2r,7)
+	rect(x1r,y1r,x2r,y2r,7)
 	--for pl in all(plat) do
 		--rectfill(pl.x,pl.y,pl.x+pl.w,pl.y+pl.h,7)		
 	--end
@@ -461,8 +461,8 @@ function collide_with_sp(obj)
 	local x=obj.x  local y=obj.y
 	local w=obj.w  local h=obj.h
 	
-	x1=x+2    y1=y-1
-	x2=x+w-3  y2=y+h
+	x1=x    y1=y
+	x2=x+w  y2=y+h
 	
 	
 	--pixels to tiles
@@ -470,7 +470,7 @@ function collide_with_sp(obj)
 	x2/=8   y2/=8
 	
 	--check tile
-	if mget(x1,y1)== mget(51,61)
+	if mget(x1,y1)==mget(51,61)
 	or mget(x1,y2)==mget(52,61)
 	or mget(x2,y1)==mget(51,62)
 	or mget(x2,y2)==mget(52,62) then
