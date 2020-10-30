@@ -38,6 +38,7 @@ function _init()
 	p.landed = false
 	p.cp = false
 	p.score=0
+	--p.fin =false
 	
 	--objet mask
 	mask = {}
@@ -206,10 +207,10 @@ function _draw()
 	--print("p.mask2 "..p.mask2,p.x,p.y-45,7)
  --print("p saut "..p.jump,p.x,p.y-51,7)
  
- if(p.score>0) then
- 	cls()
- 	print("you score si "..p.score,p.x,p.y,7)
- end
+ --if(p.score>0 and p.fin==true) then
+ 	--cls()
+ --	print("you score is "..p.score,p.x,p.y,7)
+ --end
  ------------------------------
  -- dessine la vie
  ------------------------------
@@ -414,6 +415,7 @@ function player_update()
 	if(collide_with_sp(p)) then
 		p.score=t()-p.t
 		make_explosions(p.x,p.y,48)
+		--p.fin=true
 		sfx(30)
 	end
 	
