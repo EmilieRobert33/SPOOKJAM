@@ -57,6 +57,17 @@ end
 
 function draw_menu()
  cls()
+ local sp = 78
+ if (sp ==78 and cos(1*t())>0) then
+	sp=109
+ end
+ if (sp ==109 and cos(1*t())<0) then
+	sp=78
+ end
+ spr(sp, cam_x+57,cam_y+60,2,2)
+ spr(46,cam_x+35,cam_y+25,2,2)
+ spr(68,cam_x+35+20,cam_y+25,2,2)
+ spr(76,cam_x+35+40,cam_y+25,2,2)
  print("symphony of masks", cam_x+30,cam_y+45,7)
  print("press x/❎/c/🅾️ to start",cam_x+ 20,cam_y+80,7)
 end
