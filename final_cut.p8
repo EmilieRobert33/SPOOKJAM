@@ -339,7 +339,7 @@ function draw_jeux()
  if(p.score>0) then
  	cls()
  	temps_final+=1
- 	print("your score is: "..p.score,cam_x+28,cam_y+60,7)
+ 	print("your time is: "..p.score,cam_x+28,cam_y+60,7)
  	--print("temps final"..temps_final,p.x,p.y-45,7)
  	if(temps_final>=60) then
  		state = "cut"
