@@ -72,7 +72,7 @@ end
 function up_cut()
  t_cut+=1
  if (t_cut>5) oeil=true
- if (t_cut>240) state="gene"
+ if (t_cut>260) state="gene"
 end
 
 function draw_cut()
