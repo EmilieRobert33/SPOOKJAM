@@ -552,7 +552,7 @@ function player_update()
 	if(collide_with_sp(p)) then
 		if (p.score==0) p.score=t()-p.t
 		make_explosions(p.x,p.y,48)
-		sfx(30)
+		--sfx(30)
 	end
 	
 	--mettre/enlever mask
