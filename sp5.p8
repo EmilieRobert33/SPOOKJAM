@@ -80,6 +80,9 @@ function _init()
 	detect_fait_torch()
 	make_torche(x,y)
 	
+	--change state
+	temps_final = 0
+	
 	------------test---------
 	x1r=0 y1r=0 x2r=0 y2r=0
 	collide_l="no"
@@ -204,11 +207,16 @@ function _draw()
 	--print(p.running,p.x,p.y-28,9)
 	--print("mask porte"..p.porte,p.x,p.y-20,10)
 	--print("p.mask2 "..p.mask2,p.x,p.y-45,7)
- --print("p saut "..p.jump,p.x,p.y-51,7)
+ --print("temps final"..temps_final,p.x,p.y-45,7)
  
  if(p.score>0) then
  	cls()
- 	print("you score si "..p.score,p.x,p.y,7)
+ 	temps_final+=1
+ 	print("your score is: "..p.score,cam_x+28,cam_y+60,7)
+ 	print("temps final"..temps_final,p.x,p.y-45,7)
+ 	--if(temps_final>=50) then
+ 		--state = "cut"
+ 	--end
  end
  ------------------------------
  -- dessine la vie
