@@ -38,8 +38,6 @@ function _init()
 	p.landed = false
 	p.cp = false
 	
-	
-	
 	--objet mask
 	mask = {}
 	mask.x = 32*8
@@ -53,6 +51,12 @@ function _init()
 	mask_l.choisi = 0
 	
 	mask2s={}
+	
+	mask_final={}
+	mask_final.x1=51
+	mask_final.y1=61
+	mask_final.x2=52
+	mask_final.y2=62
 	
 	gravity = 0.3
 	friction = 0.85
@@ -198,7 +202,7 @@ function _draw()
 	--print("mask porte"..p.porte,p.x,p.y-20,10)
 	--print("p.mask2 "..p.mask2,p.x,p.y-45,7)
  --print("p saut "..p.jump,p.x,p.y-51,7)
- --print("mask choisi "..mask_l.choisi,p.x,p.y-30,7)
+ print(p.final,p.x,p.y-30,7)
  
  ------------------------------
  -- dessine la vie
@@ -316,6 +320,30 @@ function collide_with(obj,flag)
 	end
 end
 
+-- collision with final mask
+function collide_with_sp(obj)
+	local x=obj.x  local y=obj.y
+	local w=obj.w  local h=obj.h
+	
+	x1=x+2    y1=y-1
+	x2=x+w-3  y2=y+h
+	
+	
+	--pixels to tiles
+	x1/=8   y1/=8
+	x2/=8   y2/=8
+	
+	--check tile
+	if mget(x1,y1)== mget(51,61)
+	or mget(x1,y2)==mget(52,61)
+	or mget(x2,y1)==mget(51,62)
+	or mget(x2,y2)==mget(52,62) then
+		return true
+	else 
+		return false
+	end
+end
+
 --collision between ojbect
 function get_box(a)
 	local box = {}
@@ -376,6 +404,12 @@ function player_update()
 	--if (p.jump == 2) then
 		--p.jump_mask = 2
 	--end
+	
+	--p collide with final mask
+	if(collide_with_sp(p)) then
+		p.t=t()-p.t
+	
+	end
 	
 	--mettre/enlever mask
 	player_mask()
