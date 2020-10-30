@@ -37,6 +37,7 @@ function _init()
 	p.sliding = false
 	p.landed = false
 	p.cp = false
+	p.score=0
 	
 	--objet mask
 	mask = {}
@@ -92,6 +93,7 @@ function _init()
  init_plat()
  init_f()
  init_co()
+ 
  --ici cest la lave 
  init_l()
  --dithering
@@ -122,6 +124,7 @@ end
 
 function _draw()
 	cls()
+	
  draw_fond()
  --sfx 
  
@@ -202,8 +205,11 @@ function _draw()
 	--print("mask porte"..p.porte,p.x,p.y-20,10)
 	--print("p.mask2 "..p.mask2,p.x,p.y-45,7)
  --print("p saut "..p.jump,p.x,p.y-51,7)
- print(p.final,p.x,p.y-30,7)
  
+ if(p.score>0) then
+ 	cls()
+ 	print("you score si "..p.score,p.x,p.y,7)
+ end
  ------------------------------
  -- dessine la vie
  ------------------------------
@@ -212,9 +218,8 @@ function _draw()
  --dessine la lave
  -------------------------------
  draw_lave()
- -------------------------------
- --plat qui bouge
- --------------------------------
+	
+ 
 end
 
 function _update()
@@ -407,8 +412,9 @@ function player_update()
 	
 	--p collide with final mask
 	if(collide_with_sp(p)) then
-		p.t=t()-p.t
-	
+		p.score=t()-p.t
+		make_explosions(p.x,p.y,48)
+		sfx(30)
 	end
 	
 	--mettre/enlever mask
@@ -682,6 +688,7 @@ end
 ---test----
 -->8
 --sfx
+
 --mask 
 function detect_fait_mask()
 	for x=0,64 do
